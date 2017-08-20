@@ -31,15 +31,16 @@ public class MainActivity extends AppCompatActivity {
         final TextView result1 = (TextView)findViewById(R.id.text_result1);
         final TextView result2 = (TextView)findViewById(R.id.text_result2);
         final TextView result3 = (TextView)findViewById(R.id.text_result3);
-        String URL ="http://asiapocc.000webhostapp.com/selectShift.php";   // Request a string response from the provided URL.
-
+        String URL ="http://asiapocc.000webhostapp.com/selectShift.php";
+        // Target URL.
         RequestBody BODY = new FormBody.Builder().add("id","2").add("name","Y.J.Chen").build();
-
+        // RequestBody building (add parameter with post request)
         Request REQ = new Request.Builder().url(URL).post(BODY).build();
+        // Request!!
         Call call = OHC.newCall(REQ);
+        // let's communicate
+//---------------------------------call method did not work-----------------------------------------
 
-//---------------------------------call method-----------------------------------------------------
-        //did not work.
 //        try {
 //            Response response = OHC.newCall(REQ).execute();
 //            final String rest = response.body().string();
@@ -65,17 +66,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call,Response response) throws IOException {
                 final String rsp_string = response.body().string();
-
-
+                // rsp_string should be final because i need to call it in runONUiThread
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        android.util.Log.v("tagFK", "Succeed");
                         try {
                             JSONObject rsp_json = new JSONObject(rsp_string);
                             android.util.Log.v("tagFK","In the try");
                             JSONArray P_data_array = rsp_json.getJSONArray("Personal_Data");
                             int length_array = P_data_array.length();
+                            // make three arrays to put the JSONobject
                             String[] JS_id = new String[length_array];
                             String[] JS_name = new String[length_array];
                             String[] JS_phone = new String[length_array];
